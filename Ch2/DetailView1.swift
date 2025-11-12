@@ -80,7 +80,7 @@ struct DetailView: View {
                         .shadow(radius: 1)
                         .accessibilityLabel(isAdded ? "Aggiunto" : "Aggiungi")
                 }
-                .padding(.trailing, 0)
+                .padding(.trailing, -7)
                 
                 // ⋯ Tasto opzioni orizzontale
                 Menu {
