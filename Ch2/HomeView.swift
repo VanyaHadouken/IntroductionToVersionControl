@@ -32,105 +32,102 @@ struct HomeView: View {
         Book(imageName: "read3", title: "Tradire i sentimenti", author: "by Franco La Cecla", description: "✯ 3.42 (50) · Essay", reviews: ["In all books where the Fragment reigns supreme, truth and whimsy flow from one end to the other. But how can we distinguish them, how can we know what is conviction and what is whim? An affirmation, born of the moment, precedes or follows another that, a lifelong companion, rises to the dignity of obsession. It is therefore up to the reader to discern, because the author often hesitates to pronounce. In Confessions and Anathemas, a succession of perplexities, one will find questions but no answers. Besides, what answer? If there were one, one would know it, with all due respect to the devotee of wonder. It seems superfluous—if not disrespectful—to add anything to the words with which Cioran himself introduced, in 1987, what would be the last book he published during his lifetime. But perhaps it can be said that this collection of vibrant aphorisms is the worthy seal of a unique work: the quintessence of an unprejudiced metaphysics and the last blaze of a style as imitated as it is inimitable, in which the perfect smoothness of a Frenchman of rare elegance translates perfectly pointed thoughts."])
     ]
     
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 25) {
-                    
-                    // MARK: Header
-                    HStack {
-                        Text("Goodreads")
-                            .font(.system(size: 28, weight: .bold))
-                        Spacer()
-                        Button(action: {}) {
-                            Image(systemName: "person.circle")
-                                .font(.system(size: 30))
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 10)
-                    
-                    // MARK: Book Cards
-                    ForEach(books.indices, id: \.self) { index in
-                        let book = books[index]
-                        let userName = userNames[index % userNames.count]
-                        
-                        // Each book card
-                        ZStack(alignment: .topTrailing) {
-                            
-                            // Background card shape
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(Color(.systemGray5))
-                                .shadow(color: .black.opacity(0.15), radius: 6, x: 0, y: 3)
-                            
-                            // 🔖 Bookmark pulsante
-                            Button(action: {
-                                if favorites.contains(book.title) {
-                                    favorites.remove(book.title)
-                                } else {
-                                    favorites.insert(book.title)
-                                }
-                            }) {
-                                Image(systemName: favorites.contains(book.title) ? "bookmark.fill" : "bookmark")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 18, weight: .bold))
-                                    .frame(width: 44, height: 44) // HIG touch area
-                                    .background(favorites.contains(book.title) ?
-                                                Color.pink.opacity(0.90) :
-                                                    Color.pink.opacity(0.60))
-                                    .clipShape(Circle())
-                                    .padding(10)
-                            }
-                            
-                            // Content
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text("Read by \(userName)")
-                                    .font(.system(size: 20))
-                                    .fontWeight(.semibold)
-                                    .padding(.horizontal, 12)
-                                    .padding(.top, 10)
-                                    .foregroundColor(.black)
-                                
-                                HStack(spacing: 15) {
-                                    
-                                    // Cover image (clickable)
-                                    NavigationLink(destination: DetailView(book: book)) {
-                                        Image(book.imageName)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 100, height:150)
-                                            .cornerRadius(10)
-                                            .shadow(color: .black.opacity(0.25), radius: 5, x: 0, y: 3)
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                    
-                                    VStack(alignment: .leading, spacing: 5) {
-                                        Text(book.title)
-                                            .font(.headline)
-                                        
-                                        Text(book.author)
-                                            .font(.subheadline)
-                                            .foregroundColor(.secondary)
-                                        
-                                        Text(book.description)
-                                            .font(.caption)
-                                            .foregroundColor(.gray)
-                                            .lineLimit(3)
-                                    }
-                                    
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 12)
-                                .padding(.bottom, 12)
+
+var body: some View {
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 25) {
+
+                        // MARK: Header
+                        HStack {
+                            Text("Goodreads")
+                                .font(.system(size: 28, weight: .bold))
+                            Spacer()
+                            Button(action: {}) {
+                                Image(systemName: "person.circle")
+                                    .font(.system(size: 30))
                             }
                         }
                         .padding(.horizontal)
-                        .frame(height: 200)
+                        .padding(.top, 10)
+
+                        // MARK: Book Cards
+                        ForEach(books.indices, id: \.self) { index in
+                            let book = books[index]
+                            let userName = userNames[index % userNames.count]
+
+                            ZStack(alignment: .topTrailing) {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .fill(Color(.systemGray5))
+                                    .shadow(color: .black.opacity(0.15), radius: 6, x: 0, y: 3)
+
+                                // Bookmark
+                                Button(action: {
+                                    if favorites.contains(book.title) {
+                                        favorites.remove(book.title)
+                                    } else {
+                                        favorites.insert(book.title)
+                                    }
+                                }) {
+                                    Image(systemName: favorites.contains(book.title) ? "bookmark.fill" : "bookmark")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 18, weight: .bold))
+                                        .frame(width: 44, height: 44)
+                                        .background(favorites.contains(book.title) ? Color.pink.opacity(0.9) : Color.pink.opacity(0.6))
+                                        .clipShape(Circle())
+                                        .padding(10)
+                                }
+
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("Read by \(userName)")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .padding(.horizontal, 12)
+                                        .padding(.top, 10)
+                                        .foregroundColor(.black)
+
+                                    HStack(spacing: 15) {
+                                        NavigationLink(destination: DetailView(book: book)) {
+                                            Image(book.imageName)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 100, height: 150)
+                                                .cornerRadius(10)
+                                                .shadow(color: .black.opacity(0.25), radius: 5, x: 0, y: 3)
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
+
+                                        VStack(alignment: .leading, spacing: 5) {
+                                            Text(book.title)
+                                                .font(.headline)
+                                            Text(book.author)
+                                                .font(.subheadline)
+                                                .foregroundColor(.secondary)
+                                            Text(book.description)
+                                                .font(.caption)
+                                                .foregroundColor(.gray)
+                                                .lineLimit(3)
+                                        }
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal, 12)
+                                    .padding(.bottom, 12)
+                                }
+                            }
+                            .padding(.horizontal)
+                            .frame(height: 200)
+                        }
                     }
+                    .padding(.bottom) // solo bottom
                 }
-                .padding(.vertical)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top) // IMPORTANTISSIMO!
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
-}
+
+    // MARK: - Preview
+    struct HomeView_Previews: PreviewProvider {
+        static var previews: some View {
+            HomeView()
+        }
+    }

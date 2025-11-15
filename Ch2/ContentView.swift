@@ -13,6 +13,10 @@ struct ContentView: View {
     @State private var showSearch: Bool = false
     @Namespace private var animation
 
+    @State private var showSplash: Bool = true
+    @State private var splashScale: CGFloat = 0.8
+    @State private var splashOpacity: Double = 0.5
+
     // Tutti i libri di MyBooksView (piatto da tutte le sezioni)
     private var allBooks: [Book] {
         MyBooksView().sections.flatMap { $0.books }
@@ -20,6 +24,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
+            // MARK: - Main TabView
             TabView(selection: $selectedTab) {
                 HomeView()
                     .tabItem {
@@ -50,7 +55,7 @@ struct ContentView: View {
                     .tag(Tab.search)
             }
 
-            // Overlay di ricerca sopra tutto
+            // MARK: - Search Overlay
             if showSearch {
                 SearchOverlay(
                     showSearch: $showSearch,
@@ -65,6 +70,35 @@ struct ContentView: View {
                 )
                 .transition(.move(edge: .bottom).combined(with: .opacity))
                 .zIndex(2)
+            }
+
+            // MARK: - Splash Overlay
+            if showSplash {
+                VStack {
+                    Image("intro") // Logo
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 300, height: 300)
+                        .foregroundColor(.blue)
+                }
+                .scaleEffect(splashScale)
+                .opacity(splashOpacity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
+                .onAppear {
+                    // Animazione di ingresso
+                    withAnimation(.easeIn(duration: 1.0)) {
+                        splashScale = 1.0
+                        splashOpacity = 1.0
+                    }
+                    // Nascondi splash dopo 2 secondi
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        withAnimation {
+                            showSplash = false
+                        }
+                    }
+                }
+                .zIndex(3)
             }
         }
         .onChange(of: selectedTab) { newTab in
@@ -87,13 +121,12 @@ enum Tab {
 struct SearchOverlay: View {
     @Binding var showSearch: Bool
     var animation: Namespace.ID
-    var allBooks: [Book]    // Riceve tutti i libri
+    var allBooks: [Book]
     var onCancel: () -> Void
 
     @State private var query: String = ""
     @FocusState private var isFocused: Bool
 
-    // Filtra libri per titolo o autore
     var filteredBooks: [Book] {
         if query.isEmpty { return [] }
         return allBooks.filter {
@@ -105,12 +138,10 @@ struct SearchOverlay: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Barra di ricerca
                 HStack {
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
-
                         TextField("Search...", text: $query)
                             .textFieldStyle(PlainTextFieldStyle())
                             .focused($isFocused)
@@ -119,12 +150,8 @@ struct SearchOverlay: View {
                                     isFocused = true
                                 }
                             }
-
                         if !query.isEmpty {
-                            Button(action: {
-                                query = ""
-                                isFocused = true
-                            }) {
+                            Button(action: { query = ""; isFocused = true }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.gray)
                                     .font(.system(size: 20))
@@ -144,19 +171,15 @@ struct SearchOverlay: View {
                 }
                 .padding()
 
-                // Lista dei risultati con copertina
                 List(filteredBooks) { book in
                     NavigationLink(destination: DetailView(book: book)) {
                         HStack(spacing: 12) {
-                            // Copertina del libro
                             Image(book.imageName)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 50, height: 75)
                                 .cornerRadius(6)
                                 .shadow(radius: 2)
-
-                            // Titolo e autore
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(book.title)
                                     .font(.headline)
