@@ -83,72 +83,79 @@ struct SettingsView: View {
         )
     ]
     
-    // MARK: - Corpo della vista
-    var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 25) {
-                    
-                    // Titolo principale e icona profilo
-                    HStack {
-                        Text("Discovery")
-                            .font(.system(size: 28, weight: .bold))
-                        Spacer()
-                        Button(action: {}) {
-                            Image(systemName: "person.circle")
-                                .font(.system(size: 30))
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 10)
-                    
-                    // Sezioni orizzontali con See All
-                    ForEach(sections) { section in
-                        VStack(alignment: .leading, spacing: 10) {
-                            // Titolo + See All
-                            HStack {
-                                Text(section.sectionTitle)
-                                    .font(.title2)
-                                    .bold()
-                                
-                                Spacer()
-                                
-                                // NavigationLink per See All
-                                NavigationLink(destination: SeeAllSectionView(section: section)) {
-                                    HStack(spacing: 4) {
-                                        Text("See All")
-                                            .font(.subheadline)
-                                            .bold()
-                                        Image(systemName: "chevron.right")
-                                            .font(.subheadline.bold())
-                                    }
-                                    .foregroundColor(.blue)
-                                }
-                                .buttonStyle(.plain)
+    // MARK: - Body
+        var body: some View {
+            NavigationView {
+                ScrollView {
+                    VStack(spacing: 25) {
+                        
+                        // Titolo principale e icona profilo
+                        HStack {
+                            Text("Discovery")
+                                .font(.system(size: 28, weight: .bold))
+                            Spacer()
+                            Button(action: {}) {
+                                Image(systemName: "person.circle")
+                                    .font(.system(size: 30))
                             }
-                            .padding(.horizontal)
-                            
-                            // Scroll orizzontale dei libri
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 15) {
-                                    ForEach(section.books) { book in
-                                        NavigationLink(destination: DetailView(book: book)) {
-                                            Image(book.imageName)
-                                                .resizable()
-                                                .scaledToFill()
-                                                .frame(width: 95, height: 152)
-                                                .clipped()
-                                                .shadow(color: Color.black.opacity(0.5), radius: 15, x: 0, y: 6)
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 10)
+                        
+                        // Sezioni con card
+                        ForEach(sections) { section in
+                            VStack(alignment: .leading, spacing: 10) {
+                                
+                                // Titolo + See All
+                                HStack {
+                                    Text(section.sectionTitle)
+                                        .font(.title2)
+                                        .bold()
+                                    
+                                    Spacer()
+                                    
+                                    NavigationLink(destination: SeeAllSectionView(section: section)) {
+                                        HStack(spacing: 4) {
+                                            Text("See All")
+                                                .font(.subheadline)
+                                                .bold()
+                                            Image(systemName: "chevron.right")
+                                                .font(.subheadline.bold())
                                         }
+                                        .foregroundColor(.blue)
                                     }
+                                    .buttonStyle(.plain)
                                 }
                                 .padding(.horizontal)
+                                
+                                // Card contenente tutti i libri della sezione
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 15) {
+                                        ForEach(section.books) { book in
+                                            NavigationLink(destination: DetailView(book: book)) {
+                                                Image(book.imageName)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(height: 150)
+                                                    .clipped()
+                                                    .cornerRadius(10)
+                                            }
+                                        }
+                                    }
+                                    .padding(.leading, 15) // lato sinistro allineato al bordo
+                                    .padding(.trailing, 50) // lato destro oltre il bordo
+                                    .padding(.vertical, 10)
+                                }
+                                .background(
+                                    Rectangle()
+                                        .fill(Color(.systemGray5))
+                                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                                )
                             }
                         }
                     }
                 }
+                .navigationBarHidden(true)
             }
-            .navigationBarHidden(true)
         }
     }
-}

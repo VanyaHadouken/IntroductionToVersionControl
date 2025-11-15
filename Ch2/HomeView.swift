@@ -60,7 +60,7 @@ struct HomeView: View {
                             
                             // Background card shape
                             RoundedRectangle(cornerRadius: 15)
-                                .fill(Color(.systemGray6))
+                                .fill(Color(.systemGray5))
                                 .shadow(color: .black.opacity(0.15), radius: 6, x: 0, y: 3)
                             
                             // 🔖 Bookmark pulsante

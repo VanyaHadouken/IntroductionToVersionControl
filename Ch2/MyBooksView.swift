@@ -75,88 +75,94 @@ struct MyBooksView: View {
     
     // MARK: - Corpo della vista
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 25) {
-                    
-                    // Titolo principale e icona profilo
-                    HStack {
-                        Text("My Books")
-                            .font(.system(size: 28, weight: .bold))
-                        Spacer()
-                        Button(action: {}) {
-                            Image(systemName: "person.circle")
-                                .font(.system(size: 30))
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 10)
-                    
-                    // Sezioni orizzontali con See All
-                    ForEach(sections) { section in
-                        VStack(alignment: .leading, spacing: 10) {
-                            // Titolo + See All
-                            HStack {
-                                Text(section.sectionTitle)
-                                    .font(.title2)
-                                    .bold()
-                                
-                                Spacer()
-                                
-                                // NavigationLink per See All
-                                NavigationLink(destination: SeeAllSectionView(section: section)) {
-                                    HStack(spacing: 4) {
-                                        Text("See All")
-                                            .font(.subheadline)
-                                            .bold()
-                                        Image(systemName: "chevron.right")
-                                            .font(.subheadline.bold())
-                                    }
-                                    .foregroundColor(.blue)
-                                }
-                                .buttonStyle(.plain)
+            NavigationView {
+                ScrollView {
+                    VStack(spacing: 25) {
+                        
+                        // Titolo principale e icona profilo
+                        HStack {
+                            Text("My Books")
+                                .font(.system(size: 28, weight: .bold))
+                            Spacer()
+                            Button(action: {}) {
+                                Image(systemName: "person.circle")
+                                    .font(.system(size: 30))
                             }
-                            .padding(.horizontal)
-                            
-                            // Scroll orizzontale dei libri
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 15) {
-                                    ForEach(section.books) { book in
-                                        NavigationLink(destination: DetailView(book: book)) {
-                                            Image(book.imageName)
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 150, height: 200)
-                                                .cornerRadius(15)
-                                                .clipped()
-                                                .shadow(color: Color.black.opacity(0.5), radius: 15, x: 0, y: 6)
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 10)
+                        
+                        // Sezioni orizzontali con card
+                        ForEach(sections) { section in
+                            VStack(alignment: .leading, spacing: 10) {
+                                
+                                // Titolo + See All
+                                HStack {
+                                    Text(section.sectionTitle)
+                                        .font(.title2)
+                                        .bold()
+                                    
+                                    Spacer()
+                                    
+                                    NavigationLink(destination: SeeAllSectionView(section: section)) {
+                                        HStack(spacing: 4) {
+                                            Text("See All")
+                                                .font(.subheadline)
+                                                .bold()
+                                            Image(systemName: "chevron.right")
+                                                .font(.subheadline.bold())
                                         }
+                                        .foregroundColor(.blue)
                                     }
+                                    .buttonStyle(.plain)
                                 }
                                 .padding(.horizontal)
+                                
+                                // Card contenente tutti i libri della sezione
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 15) {
+                                        ForEach(section.books) { book in
+                                            NavigationLink(destination: DetailView(book: book)) {
+                                                Image(book.imageName)
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 150, height: 200)
+                                                    .cornerRadius(15)
+                                                    .clipped()
+                                            }
+                                        }
+                                    }
+                                    .padding(.leading, 15) // lato sinistro allineato al bordo
+                                    .padding(.trailing, 50) // lato destro oltre il bordo
+                                    .padding(.vertical, 10)
+                                }
+                                .background(
+                                    Rectangle()
+                                        .fill(Color(.systemGray5))
+                                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                                )
                             }
                         }
                     }
                 }
+                .navigationBarHidden(true)
             }
-            .navigationBarHidden(true)
         }
     }
-}
 
-// MARK: - Modello libro
-struct Book: Identifiable {
-    let id = UUID()
-    let imageName: String
-    let title: String
-    let author: String
-    let description: String
-    let reviews: [String]
-}
+    // MARK: - Modello libro
+    struct Book: Identifiable {
+        let id = UUID()
+        let imageName: String
+        let title: String
+        let author: String
+        let description: String
+        let reviews: [String]
+    }
 
-// MARK: - Sezione orizzontale
-struct HorizontalSection: Identifiable {
-    let id = UUID()
-    let sectionTitle: String
-    let books: [Book]
-}
+    // MARK: - Sezione orizzontale
+    struct HorizontalSection: Identifiable {
+        let id = UUID()
+        let sectionTitle: String
+        let books: [Book]
+    }
