@@ -71,9 +71,9 @@ struct DetailView: View {
                         isAdded.toggle()
                     }
                 } label: {
-                    Image(systemName: isAdded ? "checkmark" : "plus")
+                    Image(systemName: isAdded ? "bookmark" : "plus")
                         .font(.system(size: 16, weight: .semibold)) // 🔹 leggermente più piccolo
-                        .foregroundColor(isAdded ? .blue : .blue)
+                        .foregroundColor(isAdded ? .pink.opacity(0.90) : .blue)
                         .padding(6) // 🔹 padding ridotto
                         .background(Color(.systemGray6))
                         .clipShape(Circle())
@@ -141,7 +141,7 @@ struct StarRatingView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: starSize, height: starSize)
-                    .foregroundColor(.yellow)
+                    .foregroundColor(.pink.opacity(0.90))
                     .accessibilityLabel("\(index) stelle")
                     .onTapGesture {
                         withAnimation(.easeInOut(duration: 0.2)) {

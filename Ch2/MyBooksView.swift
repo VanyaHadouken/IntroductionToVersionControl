@@ -126,7 +126,7 @@ struct MyBooksView: View {
                                             Image(book.imageName)
                                                 .resizable()
                                                 .scaledToFit()
-                                                .frame(width: 200, height: 250)
+                                                .frame(width: 150, height: 200)
                                                 .cornerRadius(15)
                                                 .clipped()
                                                 .shadow(color: Color.black.opacity(0.5), radius: 15, x: 0, y: 6)
