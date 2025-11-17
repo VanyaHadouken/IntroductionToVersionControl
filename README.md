@@ -1,10 +1,47 @@
-My main goal was to learn more about the HIG. Together with my mentor Roberta, I searched for a app that can help me to reach my goal. 
-I chose Goodreads cause in "My Books" view I always feel a bit overwhelmed by too many buttons.
-Starting from this I deconstructed the app but also searched for other references taking a look to "Book" and "Podcast" apps.
-After coding "My Books" view and linking the push action with a detail view I started to learn more about HIG and coding.
-So I decided to code also a Navigation bar, a Tab bar, "Home" (with cards) and "Discovery" (with lists) views, a search button but also other buttons such as chevron see all, favourite, ellipsis, exc.
-After that I created another icon according to HIG (cause the official Goodreads one is a letter) and added it also as a splash screen.
-My version of Goodreads is a very clean, minimal app with only the features that I think are really useful inside.
-Then I made my slides using Keynote. Starting from feedbacks of the 1st challenge, I made this presentation more as a story, talking about what I learned from the 1st challenge and what i want to improve.
-Inside the slides you can find some deconstruced Goodreads app screenshots but also screenshot from my app.
-I also forced myself to work using Keynote and not Figma (I used some features of Figma by the way) and made 55 slides. They are so many cause I added animation, gifs and things like that to make the experience more enjoyable for the audience.
+Goodreads — HIG Redesign (SwiftUI)
+A clean and minimal Goodreads redesign built to study and apply the Apple Human Interface Guidelines (HIG) while practicing SwiftUI development.
+
+Overview
+The goal of this project was to deepen my understanding of the HIG.
+Together with my mentor, I selected Goodreads because the “My Books” view often feels cluttered and overwhelming.
+I deconstructed the app, examined Apple’s Books and Podcasts apps, and rebuilt the main views in SwiftUI with a simpler, more focused structure.
+
+Features
+- Custom HIG-aligned app icon
+- Custom splash screen
+- Redesigned My Books view (with lists)
+- Books Detail View (push navigation)
+- Navigation Bar + Tab Bar following HIG
+- Redesigned Home (with cards)
+- Redesigned Discovery (with lists)
+- Search button
+- UI elements like: chevron “See All”, favourite, ellipsis, stars rating
+- Minimal UI focused only on essential features
+
+Presentation
+I created a 55-slide Keynote presentation, designed as a story based on feedback from my first challenge.
+It includes:
+- Deconstructed Goodreads screenshots
+- Screenshots of my redesigned views
+- Animations and GIFs for a more engaging experience
+I also challenged myself to work primarily in Keynote instead of Figma, though I used some Figma tools for assets.
+
+Repo Structure
+IntroductionToVersionControl/
+│
+├── Ch2/
+│   ├── Ch2App/
+│   ├── ContentView/
+│   ├── DetailView1/
+│   ├── FullSectionView/
+│   ├── HomeView/
+│   ├── MyBooksView/
+│   ├── SeeAllSectionsView/
+│   ├── SettingsView/
+│   └── Assets/
+│
+├── Ch2.xcodeproj/
+│
+├── Ch2.key/
+│
+└── README.md
